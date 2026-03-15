@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Drink Shop - Unleash the Energy</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #00ff88;
+            --dark-bg: #0a0a0a;
+            --card-bg: rgba(20, 20, 20, 0.9);
+            --glow-green: rgba(0, 255, 136, 0.3);
+            --text-light: #ffffff;
+            --text-muted: #b0b0b0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary-green), #00cc6a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-green);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-green);
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .hero-content h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--primary-green), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px var(--glow-green)); }
+            to { filter: drop-shadow(0 0 30px var(--primary-green)); }
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(45deg, var(--primary-green), #00cc6a);
+            color: var(--dark-bg);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        /* Products Section */
+        .products {
+            padding: 100px 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            background: linear-gradient(45deg, var(--primary-green), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-green), #00cc6a, var(--primary-green));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+            border-color: var(--primary-green);
+        }
+
+        .product-image {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, var(--primary-green), #00cc6a);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--dark-bg);
+        }
+
+        .product-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        /* Team Section */
+        .team {
+            padding: 100px 0;
+            background: rgba(20, 20, 20, 0.5);
+        }
+
+        .team-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .team-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, var(--primary-green), #00cc6a);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--dark-bg);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 1rem 2rem;
+            background: var(--card-bg);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: var(--primary-green);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-bg);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: rgba(10, 10, 10, 0.98);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 2rem 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .products-grid,
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">MONSTER SHOP</a>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#products" class="nav-link">Products</a></li>
+                <li><a href="#team" class="nav-link">Team</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content fade-in">
+            <h1>UNLEASH THE BEAST</h1>
+            <p>Premium Monster Energy Drinks & More</p>
+            <a href="#products" class="cta-button">SHOP NOW</a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <h2 class="section-title fade-in">OUR MONSTER LINEUP</h2>
+        <div class="products-grid">
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Monster Energy</h3>
+                <div class="product-price">$3.99</div>
+                <p>Classic green thunder - 16oz can</p>
+            </div>
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <h3>Ultra Zero</h3>
+                <div class="product-price">$3.99</div>
+                <p>Zero sugar, maximum energy</p>
+            </div>
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <i class="fas fa-skull"></i>
+                </div>
+                <h3>Juice Monster</h3>
+                <div class="product-price">$4.49</div>
+                <p>Pipeline Punch - tropical blast</p>
+            </div>
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <i class="fas fa-mountain"></i>
+                </div>
+                <h3>Mongo Juice</h3>
+                <div class="product-price">$4.99</div>
+                <p>Mango loco - island energy</p>
+            </div>
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <i class="fas fa-coffee"></i>
+                </div>
+                <h3>Java Monster drink</h3>
+                <div class="product-price">$4.29</div>
+                <p>Mean Bean - coffee kick</p>
+            </div>
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3>Rehab Tea</h3>
+                <div class="product-price">$3.79</div>
+                <p>Peach tea recovery</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="team">
+        <div class="team-grid">
+            <h2 class="section-title" style="grid-column: 1 / -1; text-align: center;">MEET THE BEASTS</h2>
+            <div class="team-card fade-in">
+                <div class="team-avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h3>John "The Beast" Carter</h3>
+                <p>Store Manager</p>
+                <p>15+ years slinging energy</p>
+            </div>
+            <div class="team-card fade-in">
+                <div class="team-avatar">
+                    <i class="fas fa-user-ninja"></i>
+                </div>
+                <h3>Sarah "Lightning" Lee</h3>
+                <p>Lead Stocker</p>
+                <p>Lightning-fast shelf ninja</p>
+            </div>
+            <div class="team-card fade-in">
+                <div class="team-avatar">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+                <h3>Mike "Monster" Rodriguez</h3>
+                <p>Energy Expert</p>
+                <p>Lives on Monster fuel</p>
+            </div>
+            <div class="team-card fade-in">
+                <div class="team-avatar">
+                    <i class="fas fa-user-cog"></i>
+                </div>
+                <h3>Lisa "The Closer" Kim</h3>
+                <p>Cashier Supreme</p>
+                <p>Checkout speed champion</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2 class="section-title fade-in">GET IN TOUCH</h2>
+        <p class="fade-in" style="font-size: 1.2rem; margin-bottom: 2rem;">Visit us or order online!</p>
+        <div class="contact-links">
+            <a href="tel:+1234567890" class="contact-link">
+                <i class="fas fa-phone"></i>
+                (123) 456-7890
+            </a>
+            <a href="mailto:info@monsterdrinkshop.com" class="contact-link">
+                <i class="fas fa-envelope"></i>
+                info@monsterdrinkshop.com
+            </a>
+            <a href="#" class="contact-link">
+                <i class="fas fa-map-marker-alt"></i>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monster Background</title>
+<style>
+:root {
+    --primary-green: #00ff88;
+    --dark-bg: #0a0a0a;
+    --glow-green: rgba(0, 255, 136, 0.3);
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+/* Monster Neon Glow Animation */
+body::before {
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: radial-gradient(circle at 20% 80%, rgba(0,255,136,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0,255,136,0.1) 0%, transparent 50%);
+    animation: pulse 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index:0;
+}
+
+@keyframes pulse {
+    0%,100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Optional Header */
+h1 {
+    position: relative;
+    z-index:1;
+    text-align: center;
+    margin-top: 40vh;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(45deg, var(--primary-green), #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px var(--glow-green);
+}
+
+/* Optional Subtext */
+p {
+    position: relative;
+    z-index:1;
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    opacity:0.8;
+}
+
+</style>
+</head>
+<body>
+
+<h1>MONSTER</h1>
+<p>Energy & Vibe</p>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monster Background + Product</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+    --primary-green: #00ff88;
+    --dark-bg: #0a0a0a;
+    --glow-green: rgba(0, 255, 136, 0.3);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+
+/* Neon Glow Animation Overlay */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 80%, rgba(0,255,136,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0,255,136,0.1) 0%, transparent 50%);
+    animation: pulse 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Header */
+h1 {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(45deg, var(--primary-green), #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px var(--glow-green);
+    margin-top: 3rem;
+}
+
+/* Products Section */
+.products {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 4rem auto;
+    display: flex;
+    justify-content: center;
+}
+
+.product-card {
+    background: rgba(20,20,20,0.8);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    width: 250px;
+    border: 1px solid rgba(0,255,136,0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,255,136,0.2);
+    border-color: var(--primary-green);
+}
+
+.product-image {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(45deg, var(--primary-green), #00cc6a);
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #0a0a0a;
+}
+
+.product-card h3 {
+    margin-bottom: 10px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.product-price {
+    color: var(--primary-green);
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+
+.product-card p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+</style>
+</head>
+<body>
+
+<h1>MONSTER VIBE</h1>
+
+<div class="products">
+    <!-- Monster Drink Product -->
+    <div class="product-card">
+        <div class="product-image">
+            <i class="fas fa-bolt"></i>
+        </div>
+        <h3>Monster Energy</h3>
+        <div class="product-price">$3.99</div>
+        <p>Classic Green Thunder - 16oz Can</p>
+    </div>
+</div>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monster Drinks</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+    --primary-green: #00ff88;
+    --dark-bg: #0a0a0a;
+}
+
+/* Reset */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a, #16213e);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+/* Header */
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 8vw, 4rem);
+    background: linear-gradient(45deg, var(--primary-green), #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px var(--primary-green);
+    margin-bottom: 40px;
+}
+
+/* Products grid */
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+/* Single product card */
+.product-card {
+    background: rgba(20,20,20,0.8);
+    border-radius: 15px;
+    width: 220px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(0,255,136,0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,255,136,0.3);
+    border-color: var(--primary-green);
+}
+
+/* Product image */
+.product-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--primary-green), #00cc6a);
+    margin: 0 auto 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    color: #0a0a0a;
+}
+
+/* Product info */
+.product-card h3 {
+    margin-bottom: 8px;
+    font-family: 'Orbitron', sans-serif;
+}
+.product-price {
+    color: var(--primary-green);
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.product-card p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+</style>
+</head>
+<body>
+
+<h1>MONSTER DRINKS</h1>
+
+<div class="products">
+    <!-- Monster Energy -->
+    <div class="product-card">
+        <div class="product-image">
+            <i class="fas fa-bolt"></i>
+        </div>
+        <h3>Monster Energy</h3>
+        <div class="product-price">$3.99</div>
+        <p>Classic Green Thunder - 16oz Can</p>
+    </div>
+
+    <!-- Ultra Zero -->
+    <div class="product-card">
+        <div class="product-image">
+            <i class="fas fa-fire"></i>
+        </div>
+        <h3>Ultra Zero</h3>
+        <div class="product-price">$3.99</div>
+        <p>Zero Sugar, Maximum Energy</p>
+    </div>
+
+    <!-- Java Monster -->
+    <div class="product-card">
+        <div class="product-image">
+            <i class="fas fa-coffee"></i>
+        </div>
+        <h3>Java Monster</h3>
+        <div class="product-price">$4.29</div>
+        <p>Mean Bean - Coffee Kick</p>
+    </div>
+</div>
+
+</body>
+</html>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        &copy; 2024 Monster Drink Shop. All rights reserved.
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Scroll animations
+        const fadeIns = document.querySelectorAll('.fade-in');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeIns.forEach(el => observer.observe(el));
+    </script>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monster Drinks Shop</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+    --primary-green: #00ff88;
+    --dark-bg: #0a0a0a;
+}
+
+/* Reset */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a, #16213e);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+/* Header */
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 8vw, 4rem);
+    background: linear-gradient(45deg, var(--primary-green), #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px var(--primary-green);
+    margin-bottom: 40px;
+}
+
+/* Products Grid */
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+/* Single Product Card */
+.product-card {
+    background: rgba(20,20,20,0.8);
+    border-radius: 15px;
+    width: 220px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(0,255,136,0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,255,136,0.3);
+    border-color: var(--primary-green);
+}
+
+/* Product Image */
+.product-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--primary-green), #00cc6a);
+    margin: 0 auto 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    color: #0a0a0a;
+}
+
+/* Product Info */
+.product-card h3 { margin-bottom: 8px; font-family: 'Orbitron', sans-serif; }
+.product-price { color: var(--primary-green); font-weight: 700; margin-bottom: 5px; }
+.product-card p { font-size: 0.9rem; opacity: 0.8; }
+
+/* Responsive */
+@media(max-width: 768px) {
+    .products { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<h1>MONSTER DRINKS</h1>
+
+<div class="products">
+
+<!-- Monster Energy -->
+<div class="product-card">
+  <div class="product-image"><i class="fas fa-bolt"></i></div>
+  <h3>Monster Energy</h3>
+  <div class="product-price">$3.99</div>
+  <p>Classic Green Thunder - 16oz Can</p>
+</div>
+
+<!-- Ultra Zero -->
+<div class="product-card">
+  <div class="product-image"><i class="fas fa-fire"></i></div>
+  <h3>Ultra Zero</h3>
+  <div class="product-price">$3.99</div>
+  <p>Zero Sugar, Maximum Energy</p>
+</div>
+
+<!-- Java Monster -->
+<div class="product-card">
+  <div class="product-image"><i class="fas fa-coffee"></i></div>
+  <h3>Java Monster</h3>
+  <div class="product-price">$4.29</div>
+  <p>Mean Bean - Coffee Kick</p>
+</div>
+
+<!-- Juice Monster -->
+<div class="product-card">
+  <div class="product-image"><i class="fas fa-apple-alt"></i></div>
+  <h3>Juice Monster</h3>
+  <div class="product-price">$4.49</div>
+  <p>Pipeline Punch - Tropical</p>
+</div>
+
+<!-- Mongo Juice -->
+<div class="product-card">
+  <div class="product-image"><i class="fas fa-mountain"></i></div>
+  <h3>Mongo Juice</h3>
+  <div class="product-price">$4.99</div>
+  <p>Mango Loco - Island Energy</p>
+</div>
+
+<!-- Rehab Tea -->
+<div class="product-card">
+  <div class="product-image"><i class="fas fa-star"></i></div>
+  <h3>Rehab Tea</h3>
+  <div class="product-price">$3.79</div>
+  <p>Peach Tea Recovery</p>
+</div>
+
+<!-- Monster Pipeline Punch -->
+<div class="product-card">
+  <div class="product-image"><i class="fas fa-water"></i></div>
+  <h3>Pipeline Punch</h3>
+  <div class="product-price">$4.49</div>
+  <p>Fruity Energy Blast</p>
+</div>
+
+<!-- Ultra Paradise -->
+<div class="product-card">
+  <div class="product-image"><i class="fas fa-leaf"></i></div>
+  <h3>Ultra Paradise</h3>
+  <div class="product-price">$4.19</div>
+  <p>Tropical Zero Sugar</p>
+</div>
+
+<!-- Monster Hydro -->
+<div class="product-card">
+  <div class="product-image"><i class="fas fa-tint"></i></div>
+  <h3>Monster Hydro</h3>
+  <div class="product-price">$3.89</div>
+  <p>Electrolyte Energy</p>
+</div>
+
+<!-- Monster Import -->
+<div class="product-card">
+  <div class="product-image"><i class="fas fa-gem"></i></div>
+  <h3>Monster Import</h3>
+  <div class="product-price">$5.29</div>
+  <p>Limited Edition Flavor</p>
+</div>
+
+<!-- Monster Assault -->
+<div class="product-card">
+  <div class="product-image"><i class="fas fa-bolt"></i></div>
+  <h3>Monster Assault</h3>
+  <div class="product-price">$4.79</div>
+  <p>Citrus + Energy Burst</p>
+</div>
+
+<!-- Monster Khaos -->
+<div class="product-card">
+  <div class="product-image"><i class="fas fa-fire"></i></div>
+  <h3>Monster Khaos</h3>
+  <div class="product-price">$4.99</div>
+  <p>Extreme Energy Mix</p>
+</div>
+
+</div>
+</body>
+</html>
+<!-- Book Now Button -->
+<a href="#" class="premium-button">BOOK NOW</a>
+
+<!-- Shop Now Button -->
+<a href="#" class="premium-button">SHOP NOW</a>
+
+<!-- Order Now Button -->
+<a href="#" class="premium-button">ORDER NOW</a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Shop</title>
+    <!-- Set base path -->
+    <base href="http://Monstershop/">
+    <link rel="stylesheet" href="style.css">
+</head>
+<!-- Hero Section -->
+<section id="home">
+  <h1>Welcome to Monster Shop</h1>
+  <a href="index.html#products" class="premium-button">Shop Now</a>
+</section>
+
+<section id="products">
+  <h2>Monster Drinks</h2>
+  <!-- Products go here -->
+</section>
+<div class="glass-card">
+<h3>Monster Energy</h3>
+<p>Super Energy Drink</p>
+</div>
+<button class="cool-btn">BUY NOW</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Drink Shop - Premium Background</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', monospace;
+            height: 100vh;
+            overflow: hidden;
+            cursor: none;
+        }
+
+        /* Main Canvas Background */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        /* Dynamic Gradient Overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 204, 106, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 0, 150, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: -1;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { 
+                transform: rotate(0deg) scale(1);
+                opacity: 0.8;
+            }
+            33% { 
+                transform: rotate(120deg) scale(1.1);
+                opacity: 0.6;
+            }
+            66% { 
+                transform: rotate(240deg) scale(0.9);
+                opacity: 0.9;
+            }
+        }
+
+        /* Floating Energy Particles */
+        .energy-particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 20s linear infinite;
+        }
+
+        .energy-particle:nth-child(odd) {
+            background: linear-gradient(45deg, #00ff88, #00cc6a);
+            box-shadow: 0 0 20px #00ff88;
+        }
+
+        .energy-particle:nth-child(even) {
+            background: linear-gradient(45deg, #ff0080, #ff4d94);
+            box-shadow: 0 0 20px #ff0080;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        Core (16px) → Ring (50px) → Hover Ring (80px) → Label
